@@ -9,13 +9,12 @@ import org.testng.annotations.Test;
 import org.testng.Assert;
 
 public class AppTest {
-    private WebDriver driver;
+    private ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     private class SeleniumActions {
-        private WebDriver driver;
 
-        public SeleniumActions(WebDriver driver) {
-            this.driver = driver;
+        public WebDriver getDriver() {
+            return driver.get();
         }
 
         public WebElement getElement(By by) {
@@ -35,8 +34,8 @@ public class AppTest {
 
     @BeforeClass
     public void setup() {
-        driver = new FirefoxDriver();
-        seleniumActions = new SeleniumActions(driver);
+        driver.set(new FirefoxDriver());
+        seleniumActions = new SeleniumActions();
     }
 
     @Test

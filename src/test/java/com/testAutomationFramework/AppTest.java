@@ -35,7 +35,17 @@ public class AppTest {
             page.fill("[name='q']", "Sweep");
             page.press("[name='q']", "Enter");
             //page.waitForURL("**/search**");
-            //Assert.assertTrue(page.title().startsWith("Sweep - Google Search"));
-        }
+    public String getTitle() {
+        return driver.get().getTitle();
+    }
+
+    public void closeBrowserSession() {
+        driver.get().quit();
+        driver.remove();
+    }
+
+    public enum BrowserType {
+        CHROME,
+        FIREFOX
     }
 }

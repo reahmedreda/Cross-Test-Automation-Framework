@@ -8,19 +8,18 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 
+
+import com.example.SeleniumActions;
+
 public class AppTest {
-    import com.example.SeleniumActions;
-    
-    public class AppTest {
     SeleniumActions seleniumActions = new SeleniumActions();
-    
+
     @Test
     public void testGoogleSearch() {
         seleniumActions.navigateToUrl("http://www.google.com");
         WebElement searchBox = seleniumActions.getElement(By.name("q"));
         seleniumActions.sendKeys(searchBox, "Sweep");
         seleniumActions.submit(searchBox);
-        Assert.assertTrue(seleniumActions.getPageTitle().startsWith("Sweep - Google Search"));
-    }
+        Assert.assertTrue(seleniumActions.getTitle().startsWith("Sweep - Google Search"));
     }
 }

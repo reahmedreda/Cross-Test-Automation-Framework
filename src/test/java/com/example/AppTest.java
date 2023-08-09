@@ -29,8 +29,15 @@ public class AppTest {
     }
     
     @Test
-    public void testGoogleSearchPlaywright() {
-        // Replace Selenium actions with Playwright actions
-        // This is a placeholder as the actual Playwright actions would depend on the implementation of Playwright in the SeleniumActions class
+    public void testGoogleSearchPlaywright() throws Exception {
+        try (Playwright playwright = Playwright.create()) {
+            Browser browser = playwright.chromium().launch();
+            Page page = browser.newPage();
+            page.navigate("http://www.google.com");
+            page.fill("[name='q']", "Sweep");
+            page.press("[name='q']", "Enter");
+            page.waitForNavigation();
+            Assert.assertTrue(page.title().startsWith("Sweep - Google Search"));
+        }
     }
 }

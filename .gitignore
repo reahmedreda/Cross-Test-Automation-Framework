@@ -1,2 +1,4 @@
 .idea/*
 *.iml
+allure-results/*
+target

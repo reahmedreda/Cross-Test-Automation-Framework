@@ -21,6 +21,13 @@
             <artifactId>selenium-java</artifactId>
             <version>3.141.59</version>
         </dependency>
+        <!-- Playwright -->
+        <dependency>
+            <groupId>com.microsoft.playwright</groupId>
+            <artifactId>playwright</artifactId>
+            <version>1.14.1</version>
+            <scope>test</scope>
+        </dependency>
         <!-- Rest Assured -->
         <dependency>
             <groupId>io.rest-assured</groupId>

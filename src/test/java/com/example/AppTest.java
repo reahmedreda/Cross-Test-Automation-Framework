@@ -9,14 +9,14 @@ import org.testng.annotations.Test;
 import org.testng.Assert;
 
 public class AppTest {
-    public enum BrowserType {
-        CHROME,
-        FIREFOX
-    }
-
-    private ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     private class SeleniumActions {
+        public enum BrowserType {
+            CHROME,
+            FIREFOX
+        }
+
+        private ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
         public void createBrowserSession(BrowserType browserType) {
             switch (browserType) {
@@ -46,7 +46,7 @@ public class AppTest {
 
     @BeforeClass
     public void setup() {
-        seleniumActions.createBrowserSession(BrowserType.FIREFOX);
+        seleniumActions.createBrowserSession(SeleniumActions.BrowserType.FIREFOX);
     }
 
     @Test
@@ -56,10 +56,10 @@ public class AppTest {
 
     @Test
     public void testGoogleSearch() {
-        driver.get("http://www.google.com");
+        seleniumActions.driver.get().get("http://www.google.com");
         WebElement searchBox = seleniumActions.getElement(By.name("q"));
         seleniumActions.sendKeys(searchBox, "Sweep");
         seleniumActions.submit(searchBox);
-        Assert.assertTrue(driver.getTitle().startsWith("Sweep - Google Search"));
+        Assert.assertTrue(seleniumActions.driver.get().getTitle().startsWith("Sweep - Google Search"));
     }
 }

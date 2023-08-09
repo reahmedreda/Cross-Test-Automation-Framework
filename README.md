@@ -11,3 +11,9 @@ To run the tests, navigate to the project directory in your terminal and run the
 ```
 mvn test
 ```
+
+## Generating Allure Reports
+To generate Allure reports, navigate to the project directory in your terminal and run the following command:
+```
+mvn allure:serve
+```

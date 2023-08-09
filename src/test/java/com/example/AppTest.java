@@ -10,6 +10,27 @@ import org.testng.Assert;
 
 public class AppTest {
     private WebDriver driver;
+
+    private class SeleniumActions {
+        private WebDriver driver;
+
+        public SeleniumActions(WebDriver driver) {
+            this.driver = driver;
+        }
+
+        public WebElement getElement(By by) {
+            return driver.findElement(by);
+        }
+
+        public void sendKeys(WebElement element, String keys) {
+            element.sendKeys(keys);
+        }
+
+        public void submit(WebElement element) {
+            element.submit();
+        }
+    }
+
     private SeleniumActions seleniumActions;
 
     @BeforeClass

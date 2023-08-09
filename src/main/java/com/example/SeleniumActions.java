@@ -33,6 +33,14 @@ public class SeleniumActions {
         element.submit();
     }
 
+    public void navigateToUrl(String url) {
+        driver.get().get(url);
+    }
+
+    public String getTitle() {
+        return driver.get().getTitle();
+    }
+
     public enum BrowserType {
         CHROME,
         FIREFOX

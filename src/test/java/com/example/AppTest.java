@@ -10,10 +10,12 @@ import org.testng.Assert;
 
 public class AppTest {
     private WebDriver driver;
+    private SeleniumActions seleniumActions;
 
     @BeforeClass
     public void setup() {
         driver = new FirefoxDriver();
+        seleniumActions = new SeleniumActions(driver);
     }
 
     @Test
@@ -24,9 +26,9 @@ public class AppTest {
     @Test
     public void testGoogleSearch() {
         driver.get("http://www.google.com");
-        WebElement searchBox = driver.findElement(By.name("q"));
-        searchBox.sendKeys("Sweep");
-        searchBox.submit();
+        WebElement searchBox = seleniumActions.getElement(By.name("q"));
+        seleniumActions.sendKeys(searchBox, "Sweep");
+        seleniumActions.submit(searchBox);
         Assert.assertTrue(driver.getTitle().startsWith("Sweep - Google Search"));
     }
 }

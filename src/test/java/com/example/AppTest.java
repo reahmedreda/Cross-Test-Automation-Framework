@@ -9,16 +9,28 @@ import org.testng.annotations.Test;
 import org.testng.Assert;
 
 public class AppTest {
+    public enum BrowserType {
+        CHROME,
+        FIREFOX
+    }
+
     private ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     private class SeleniumActions {
 
-        public WebDriver getDriver() {
-            return driver.get();
+        public void createBrowserSession(BrowserType browserType) {
+            switch (browserType) {
+                case CHROME:
+                    driver.set(new ChromeDriver());
+                    break;
+                case FIREFOX:
+                    driver.set(new FirefoxDriver());
+                    break;
+            }
         }
 
         public WebElement getElement(By by) {
-            return driver.findElement(by);
+            return driver.get().findElement(by);
         }
 
         public void sendKeys(WebElement element, String keys) {
@@ -34,8 +46,7 @@ public class AppTest {
 
     @BeforeClass
     public void setup() {
-        driver.set(new FirefoxDriver());
-        seleniumActions = new SeleniumActions();
+        seleniumActions.createBrowserSession(BrowserType.FIREFOX);
     }
 
     @Test

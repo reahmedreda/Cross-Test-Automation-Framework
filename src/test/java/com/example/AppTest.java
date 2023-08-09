@@ -10,37 +10,6 @@ import org.testng.Assert;
 
 public class AppTest {
 
-    private class SeleniumActions {
-        public enum BrowserType {
-            CHROME,
-            FIREFOX
-        }
-
-        private ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-
-        public void createBrowserSession(BrowserType browserType) {
-            switch (browserType) {
-                case CHROME:
-                    driver.set(new ChromeDriver());
-                    break;
-                case FIREFOX:
-                    driver.set(new FirefoxDriver());
-                    break;
-            }
-        }
-
-        public WebElement getElement(By by) {
-            return driver.get().findElement(by);
-        }
-
-        public void sendKeys(WebElement element, String keys) {
-            element.sendKeys(keys);
-        }
-
-        public void submit(WebElement element) {
-            element.submit();
-        }
-    }
 
     private SeleniumActions seleniumActions;
 

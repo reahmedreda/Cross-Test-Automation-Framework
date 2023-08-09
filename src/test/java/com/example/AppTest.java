@@ -9,26 +9,35 @@ import org.testng.annotations.Test;
 import org.testng.Assert;
 
 public class AppTest {
+public class SeleniumActions {
 
+    private ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
 
-    private SeleniumActions seleniumActions;
-
-    @BeforeClass
-    public void setup() {
-        seleniumActions.createBrowserSession(SeleniumActions.BrowserType.FIREFOX);
+    public void createBrowserSession(BrowserType browserType) {
+        switch (browserType) {
+            case CHROME:
+                driver.set(new ChromeDriver());
+                break;
+            case FIREFOX:
+                driver.set(new FirefoxDriver());
+                break;
+        }
     }
 
-    @Test
-    public void testMethod() {
-        Assert.assertTrue(true);
+    public void navigateToUrl(String url) {
+        driver.get().get(url);
     }
 
+    public String getPageTitle() {
+        return driver.get().getTitle();
+    }
+}
     @Test
     public void testGoogleSearch() {
-        seleniumActions.driver.get().get("http://www.google.com");
+        seleniumActions.navigateToUrl("http://www.google.com");
         WebElement searchBox = seleniumActions.getElement(By.name("q"));
         seleniumActions.sendKeys(searchBox, "Sweep");
         seleniumActions.submit(searchBox);
-        Assert.assertTrue(seleniumActions.driver.get().getTitle().startsWith("Sweep - Google Search"));
+        Assert.assertTrue(seleniumActions.getPageTitle().startsWith("Sweep - Google Search"));
     }
 }

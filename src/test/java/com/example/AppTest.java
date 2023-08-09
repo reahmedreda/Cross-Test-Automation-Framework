@@ -9,29 +9,11 @@ import org.testng.annotations.Test;
 import org.testng.Assert;
 
 public class AppTest {
-public class SeleniumActions {
-
-    private ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
-
-    public void createBrowserSession(BrowserType browserType) {
-        switch (browserType) {
-            case CHROME:
-                driver.set(new ChromeDriver());
-                break;
-            case FIREFOX:
-                driver.set(new FirefoxDriver());
-                break;
-        }
-    }
-
-    public void navigateToUrl(String url) {
-        driver.get().get(url);
-    }
-
-    public String getPageTitle() {
-        return driver.get().getTitle();
-    }
-}
+    import com.example.SeleniumActions;
+    
+    public class AppTest {
+    SeleniumActions seleniumActions = new SeleniumActions();
+    
     @Test
     public void testGoogleSearch() {
         seleniumActions.navigateToUrl("http://www.google.com");
@@ -39,5 +21,6 @@ public class SeleniumActions {
         seleniumActions.sendKeys(searchBox, "Sweep");
         seleniumActions.submit(searchBox);
         Assert.assertTrue(seleniumActions.getPageTitle().startsWith("Sweep - Google Search"));
+    }
     }
 }

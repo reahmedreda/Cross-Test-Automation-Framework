@@ -3,7 +3,7 @@ package com.example;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class SeleniumActions {
@@ -13,6 +13,7 @@ public class SeleniumActions {
     public void createBrowserSession(BrowserType browserType) {
         switch (browserType) {
             case CHROME:
+                WebDriverManager.chromedriver().setup();
                 driver.set(new ChromeDriver());
                 break;
             case FIREFOX:

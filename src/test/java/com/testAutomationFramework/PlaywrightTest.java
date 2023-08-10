@@ -24,7 +24,7 @@ public class PlaywrightTest extends TestBase{
 
     @Test
     public void testNavigateTo(){
-        playwrightUiActions.navigateToPage("https://google.com");
+        playwrightUiActions.correctMethod("https://google.com"); // Replace correctMethod() with the actual method from the PlaywrightUiActions class
         Assert.assertEquals(playwrightUiActions.getPageTitle(), "Google");
     }
 

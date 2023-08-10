@@ -256,6 +256,23 @@ public class PlaywrightUiActions implements UiActions {
     private ElementHandle getElementHandle(ElementDto ele) {
     private ElementHandle getElementHandle(ElementDto ele) {
         String selector = ele.selector;
-        return page.querySelector(selector);
+        ElementHandle elementHandle;
+        switch (ele.locator) {
+            case XPath:
+                elementHandle = page.querySelector("xpath=" + selector);
+                break;
+            case CSS:
+                elementHandle = page.querySelector(selector);
+                break;
+            case Id:
+                elementHandle = page.querySelector("#" + selector);
+                break;
+            case ClassName:
+                elementHandle = page.querySelector("." + selector);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid locator type: " + ele.locator);
+        }
+        return elementHandle;
     }
 }

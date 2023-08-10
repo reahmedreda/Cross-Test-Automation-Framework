@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="All Tests" data-provider-thread-count="4" parallel="methods" thread-count="4" verbose="2" >
+    <test name="Demo">
+        <parameter name="browser" value="Chrome" />
+        <classes>
+            <class name="com.testAutomationFramework.SeleniumTest"></class>
+
+            <class name="com.testAutomationFramework.PlaywrightTest"></class>
+        </classes>
+    </test>
+</suite>

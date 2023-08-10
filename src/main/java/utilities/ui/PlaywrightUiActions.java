@@ -254,7 +254,6 @@ public class PlaywrightUiActions implements UiActions {
     }
 
     private ElementHandle getElementHandle(ElementDto ele) {
-    private ElementHandle getElementHandle(ElementDto ele) {
         String selector = ele.selector;
         ElementHandle elementHandle;
         switch (ele.locator) {

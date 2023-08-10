@@ -275,7 +275,7 @@ public class PlaywrightUiActions implements UiActions {
         return elementHandle;
     }
     
-    private List<ElementHandle> getElementHandles(ElementDto ele) {
+    private List<ElementHandle> getElementsHandle(ElementDto ele) {
         String selector = ele.selector;
         List<ElementHandle> elementHandles;
         switch (ele.locator) {

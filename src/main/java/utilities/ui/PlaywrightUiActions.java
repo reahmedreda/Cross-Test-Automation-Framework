@@ -29,7 +29,22 @@ public class PlaywrightUiActions implements UiActions {
     @Override
     public void sendKeys(ElementDto ele, KeyboardKeys key) {
         ElementHandle elementHandle = getElementHandle(ele);
-        elementHandle.press(key.toString());
+        String keyToPress;
+        switch (key) {
+            case ENTER:
+                keyToPress = "Enter";
+                break;
+            case SPACE:
+                keyToPress = "Space";
+                break;
+            case ESC:
+                keyToPress = "Escape";
+                break;
+            // Add more cases if needed
+            default:
+                throw new IllegalArgumentException("Invalid key: " + key);
+        }
+        elementHandle.press(keyToPress);
     }
 
     @Override

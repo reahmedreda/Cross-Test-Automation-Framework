@@ -110,7 +110,11 @@ public class PlaywrightUiActions implements UiActions {
     @Override
     public String getText(ElementDto ele) {
         ElementHandle elementHandle = getElementHandle(ele);
-        return elementHandle.innerText();
+        if (elementHandle != null) {
+            return elementHandle.innerText();
+        } else {
+            return null;
+        }
     }
 
     @Override

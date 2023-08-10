@@ -125,7 +125,7 @@ public class PlaywrightUiActions implements UiActions {
     @Override
     public void navigateToPage(String url) {
         page.navigate(url);
-        page.waitForNavigation();
+        page.waitForLoadState();
     }
 
     @Override

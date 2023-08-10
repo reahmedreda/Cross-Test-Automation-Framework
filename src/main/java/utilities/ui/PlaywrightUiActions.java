@@ -22,7 +22,7 @@ public class PlaywrightUiActions implements UiActions {
 
     @Override
     public int getTheSizeOfListOfElements(ElementDto ele) {
-        List<ElementHandle> elements = page.querySelectorAll(ele.selector);
+        List<ElementHandle> elements = getElementsHandle(ele);
         return elements.size();
     }
 

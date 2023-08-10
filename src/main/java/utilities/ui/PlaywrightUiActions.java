@@ -211,7 +211,9 @@ public class PlaywrightUiActions implements UiActions {
     @Override
     public void clearField(ElementDto ele) {
         ElementHandle elementHandle = getElementHandle(ele);
-        elementHandle.clear();
+        elementHandle.click(); // Click on the field to focus it
+        elementHandle.press("Control+A"); // Select all text in the field
+        elementHandle.press("Backspace"); // Delete the selected text
     }
 
     @Override

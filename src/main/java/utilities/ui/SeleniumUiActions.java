@@ -1,15 +1,11 @@
 package utilities.ui;
 
-import jdk.jshell.spi.ExecutionControl;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.*;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -542,23 +538,23 @@ public class SeleniumUiActions implements UiActions {
         WebElement webElement = driver.findElement(b);
         Keys k;
         switch (key) {
-            case down:
+            case DOWN:
                 k = Keys.DOWN;
                 break;
 
-            case up:
+            case UP:
                 k = Keys.UP;
                 break;
 
-            case enter:
+            case ENTER:
                 k = Keys.ENTER;
                 break;
 
-            case tab:
+            case TAB:
                 k = Keys.TAB;
                 break;
 
-            case esc:
+            case ESC:
                 k = Keys.ESCAPE;
                 break;
             default:

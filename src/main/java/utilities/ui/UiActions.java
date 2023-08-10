@@ -47,11 +47,12 @@ public interface UiActions {
     void implicitWait(int seconds);
 
     public enum KeyboardKeys {
-        up,
-        down,
-        enter,
-        tab,
-        esc
+        UP,
+        DOWN,
+        ENTER,
+        TAB,
+        ESC,
+        SPACE
     }
 
 

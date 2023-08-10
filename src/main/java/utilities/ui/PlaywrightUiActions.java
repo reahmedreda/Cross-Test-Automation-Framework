@@ -101,7 +101,7 @@ public class PlaywrightUiActions implements UiActions {
     @Override
     public void clickOnOneElementFromListOfElements(ElementDto ele, String value) {
         ElementHandle elementHandle = getElementHandle(ele);
-        List<ElementHandle> elements = elementHandle.querySelectorAll(value);
+        List<ElementHandle> elements = getElementsHandle(ele);
         elements.get(0).click();
     }
 

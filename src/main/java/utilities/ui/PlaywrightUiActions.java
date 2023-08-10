@@ -36,7 +36,7 @@ public class PlaywrightUiActions implements UiActions {
     public void setText(ElementDto ele, String text, boolean clear, Boolean... assertOnActualValue) {
         ElementHandle elementHandle = getElementHandle(ele);
         if (clear) {
-            elementHandle.clear();
+            clearField(ele);
         }
         elementHandle.type(text);
         if (assertOnActualValue.length > 0 && assertOnActualValue[0]) {

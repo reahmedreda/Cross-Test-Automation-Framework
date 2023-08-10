@@ -5,6 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.ElementState;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class PlaywrightUiActions implements UiActions {
         elementHandle.type(text);
         if (assertOnActualValue.length > 0 && assertOnActualValue[0]) {
             String actualText = elementHandle.innerText();
-            // Perform assertion on actualText
+            Assert.assertEquals(actualText, text, "The actual text does not match the expected text.");
         }
     }
 

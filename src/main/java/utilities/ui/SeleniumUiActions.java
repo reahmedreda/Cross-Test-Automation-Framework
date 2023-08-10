@@ -44,7 +44,7 @@ public class SeleniumUiActions implements UiActions {
         throw new NotImplementedException();
     }
 
-    @Override
+    
     public void sendKeys(ElementDto ele, Keys key) {
         By b = returnElementLocatorBy(ele);
         WebElement element = waitUntil(b, ExpectedConditionsEnum.presenceOfElement);

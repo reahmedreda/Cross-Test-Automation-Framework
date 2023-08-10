@@ -22,8 +22,8 @@ public class PlaywrightUiActions implements UiActions {
 
     @Override
     public int getTheSizeOfListOfElements(ElementDto ele) {
-        ElementHandle elementHandle = getElementHandle(ele);
-        return elementHandle.evaluateHandle("elements => elements.length");
+        List<ElementHandle> elements = page.querySelectorAll(ele.selector);
+        return elements.size();
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.ElementState;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +23,29 @@ public class PlaywrightUiActions implements UiActions {
 
     @Override
     public int getTheSizeOfListOfElements(ElementDto ele) {
-        List<ElementHandle> elements = page.querySelectorAll(ele.selector);
+        List<ElementHandle> elements = getElementsHandle(ele);
         return elements.size();
     }
 
     @Override
     public void sendKeys(ElementDto ele, KeyboardKeys key) {
         ElementHandle elementHandle = getElementHandle(ele);
-        elementHandle.press(key.toString());
+        String keyToPress;
+        switch (key) {
+            case ENTER:
+                keyToPress = "Enter";
+                break;
+            case SPACE:
+                keyToPress = "Space";
+                break;
+            case ESC:
+                keyToPress = "Escape";
+                break;
+            // Add more cases if needed
+            default:
+                throw new IllegalArgumentException("Invalid key: " + key);
+        }
+        elementHandle.press(keyToPress);
     }
 
     @Override
@@ -41,7 +57,7 @@ public class PlaywrightUiActions implements UiActions {
         elementHandle.type(text);
         if (assertOnActualValue.length > 0 && assertOnActualValue[0]) {
             String actualText = elementHandle.innerText();
-            // Perform assertion on actualText
+            Assert.assertEquals(actualText, text, "The actual text does not match the expected text.");
         }
     }
 
@@ -85,19 +101,28 @@ public class PlaywrightUiActions implements UiActions {
     @Override
     public void clickOnOneElementFromListOfElements(ElementDto ele, String value) {
         ElementHandle elementHandle = getElementHandle(ele);
-        List<ElementHandle> elements = elementHandle.querySelectorAll(value);
-        elements.get(0).click();
+        List<ElementHandle> elements = getElementsHandle(ele);
+        if (elements != null && elements.size() > 0) {
+            elements.get(0).click();
+        }
     }
 
     @Override
     public String getText(ElementDto ele) {
         ElementHandle elementHandle = getElementHandle(ele);
-        return elementHandle.innerText();
+        if (elementHandle != null) {
+            return elementHandle.innerText();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public String getValue(ElementDto ele) {
         ElementHandle elementHandle = getElementHandle(ele);
+        if (elementHandle == null) {
+            return null;
+        }
         return elementHandle.getAttribute("value");
     }
 
@@ -273,5 +298,27 @@ public class PlaywrightUiActions implements UiActions {
                 throw new IllegalArgumentException("Invalid locator type: " + ele.locator);
         }
         return elementHandle;
+    }
+    
+    private List<ElementHandle> getElementsHandle(ElementDto ele) {
+        String selector = ele.selector;
+        List<ElementHandle> elementHandles;
+        switch (ele.locator) {
+            case XPath:
+                elementHandles = page.querySelectorAll("xpath=" + selector);
+                break;
+            case CSS:
+                elementHandles = page.querySelectorAll(selector);
+                break;
+            case Id:
+                elementHandles = page.querySelectorAll("#" + selector);
+                break;
+            case ClassName:
+                elementHandles = page.querySelectorAll("." + selector);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid locator type: " + ele.locator);
+        }
+        return elementHandles;
     }
 }

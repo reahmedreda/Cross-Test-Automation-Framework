@@ -116,6 +116,9 @@ public class PlaywrightUiActions implements UiActions {
     @Override
     public String getValue(ElementDto ele) {
         ElementHandle elementHandle = getElementHandle(ele);
+        if (elementHandle == null) {
+            return null;
+        }
         return elementHandle.getAttribute("value");
     }
 

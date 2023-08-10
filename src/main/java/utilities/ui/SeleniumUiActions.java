@@ -35,13 +35,9 @@ public class SeleniumUiActions implements UiActions {
         return elements.size();
     }
 
-    @Override
-    public void sendKeys(ElementDto ele, KeyboardKeys key) {
-        throw new NotImplementedException();
-    }
 
-    
-    public void sendKeys(ElementDto ele, Keys key) {
+
+    private void sendKeys(ElementDto ele, Keys key) {
         By b = returnElementLocatorBy(ele);
         WebElement element = waitUntil(b, ExpectedConditionsEnum.presenceOfElement);
         if (element != null)
@@ -444,10 +440,6 @@ public class SeleniumUiActions implements UiActions {
         return false;
     }
 
-    @Override
-    public void assertElementText(ElementDto ele, String expectedText) {
-
-    }
 
     @Override
     public boolean isElementClickable(ElementDto ele) {

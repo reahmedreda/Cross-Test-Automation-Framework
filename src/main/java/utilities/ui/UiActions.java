@@ -5,8 +5,6 @@ import java.util.List;
 
 public interface UiActions {
     int getTheSizeOfListOfElements(ElementDto ele);
-    void sendKeys(ElementDto ele, KeyboardKeys key);
-
     void setText(ElementDto ele, String text, boolean clear, Boolean... assertOnActualValue);
     void clickOn(ElementDto ele, boolean assertion, ElementDto expectedElementOb) throws Exception;
     void clickOn(ElementDto ele, Boolean... waitUntilVisibleOnly);
@@ -29,7 +27,6 @@ public interface UiActions {
 
     boolean isElementEnabled(ElementDto ele) throws Exception;
     boolean isElementSelected(ElementDto ele);
-    void assertElementText(ElementDto ele, String expectedText);
 
     boolean isElementClickable(ElementDto ele);
 

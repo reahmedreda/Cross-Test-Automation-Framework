@@ -10,7 +10,6 @@ public class TestBase {
 
     @BeforeMethod
     public void setup(){
-        System.out.println(Thread.currentThread().getId());
         browser = new PlaywrightBrowserActions();
         browser.createBrowserSession(BrowserActions.DriverType.CHROME);
     }

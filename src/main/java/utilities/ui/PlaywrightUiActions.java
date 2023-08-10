@@ -2,9 +2,6 @@ package utilities.ui;
 
 import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
-import com.microsoft.playwright.options.ElementState;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import org.testng.Assert;
 
 import java.util.ArrayList;
@@ -14,11 +11,10 @@ import static com.microsoft.playwright.options.ElementState.*;
 
 public class PlaywrightUiActions implements UiActions {
 
-    private Page page ;
+    private PlaywrightBrowserActions playwrightBrowserActions;
 
     public PlaywrightUiActions() {
-        PlaywrightBrowserActions playwrightBrowserActions = new PlaywrightBrowserActions();
-        page = playwrightBrowserActions.getPageSession();
+        this.playwrightBrowserActions = new PlaywrightBrowserActions();
     }
 
     @Override
@@ -27,8 +23,7 @@ public class PlaywrightUiActions implements UiActions {
         return elements.size();
     }
 
-    @Override
-    public void sendKeys(ElementDto ele, KeyboardKeys key) {
+    public void clickOnKeyBoard(ElementDto ele, KeyboardKeys key) {
         ElementHandle elementHandle = getElementHandle(ele);
         String keyToPress;
         switch (key) {
@@ -143,12 +138,13 @@ public class PlaywrightUiActions implements UiActions {
 
     @Override
     public void navigateToPage(String url, ElementDto ele) {
-        page.navigate(url);
+        playwrightBrowserActions.getPageSession().navigate(url);
         getElementHandle(ele);
     }
 
     @Override
     public void navigateToPage(String url) {
+        Page page = playwrightBrowserActions.getPageSession();
         page.navigate(url);
         page.waitForLoadState();
     }
@@ -200,6 +196,7 @@ public class PlaywrightUiActions implements UiActions {
 
     @Override
     public boolean isElementExist(ElementDto ele) {
+        Page page = playwrightBrowserActions.getPageSession();
         ElementHandle elementHandle = page.querySelector(ele.selector);
         return elementHandle != null;
     }
@@ -219,14 +216,7 @@ public class PlaywrightUiActions implements UiActions {
         ElementHandle elementHandle = getElementHandle(ele);
         return elementHandle.isChecked();
     }
-
-    @Override
-    public void assertElementText(ElementDto ele, String expectedText) {
-        ElementHandle elementHandle = getElementHandle(ele);
-        String actualText = elementHandle.innerText();
-        // Perform assertion on actualText and expectedText
-    }
-
+    
     @Override
     public boolean isElementClickable(ElementDto ele) {
         ElementHandle elementHandle = getElementHandle(ele);
@@ -268,18 +258,15 @@ public class PlaywrightUiActions implements UiActions {
     }
 
     @Override
-    public void clickOnKeyBoard(ElementDto ele, KeyboardKeys key) {
-        ElementHandle elementHandle = getElementHandle(ele);
-        elementHandle.press(key.toString());
-    }
-
-    @Override
     public void implicitWait(int seconds) {
+
+        Page page = playwrightBrowserActions.getPageSession();
         page.waitForTimeout(seconds * 1000);
     }
 
     private ElementHandle getElementHandle(ElementDto ele) {
         String selector = ele.selector;
+        Page page = playwrightBrowserActions.getPageSession();
         ElementHandle elementHandle;
         switch (ele.locator) {
             case XPath:
@@ -302,6 +289,7 @@ public class PlaywrightUiActions implements UiActions {
     
     private List<ElementHandle> getElementsHandle(ElementDto ele) {
         String selector = ele.selector;
+        Page page = playwrightBrowserActions.getPageSession();
         List<ElementHandle> elementHandles;
         switch (ele.locator) {
             case XPath:

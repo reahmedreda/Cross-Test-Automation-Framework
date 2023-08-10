@@ -192,7 +192,7 @@ public class PlaywrightUiActions implements UiActions {
     @Override
     public boolean isElementSelected(ElementDto ele) {
         ElementHandle elementHandle = getElementHandle(ele);
-        return elementHandle.isSelected();
+        return elementHandle.isChecked();
     }
 
     @Override

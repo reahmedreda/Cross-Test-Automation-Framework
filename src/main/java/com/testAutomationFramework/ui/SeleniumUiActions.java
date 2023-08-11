@@ -1,6 +1,5 @@
-package utilities.ui;
+package com.testAutomationFramework.ui;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,25 +12,34 @@ import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-import static utilities.LoggingHandling.logger;
+import static com.testAutomationFramework.LoggingHandling.logger;
 
 
 public class SeleniumUiActions implements UiActions {
 
     long twentySeconds = 20;
 
-    WebDriver driver;
+    SeleniumBrowserActions seleniumBrowserActions;
+
 
     public SeleniumUiActions() {
         SeleniumBrowserActions seleniumBrowserActions = new SeleniumBrowserActions();
-        this.driver = (WebDriver) seleniumBrowserActions.getBrowserSession();
+    }
+
+    public SeleniumUiActions(BrowserActions browserActions) {
+       seleniumBrowserActions = (SeleniumBrowserActions) browserActions;
+    }
+
+
+    private WebDriver getCurrentDriver(){
+       return  (WebDriver) seleniumBrowserActions.getBrowserSession();
     }
 
     @Override
     public int getTheSizeOfListOfElements(ElementDto ele) {
         By b = returnElementLocatorBy(ele); // wait till all search block appears
         waitUntil(b, ExpectedConditionsEnum.visibilityOfElementLocated);
-        List<WebElement> elements = driver.findElements(b);
+        List<WebElement> elements = getCurrentDriver().findElements(b);
         return elements.size();
     }
 
@@ -104,7 +112,7 @@ public class SeleniumUiActions implements UiActions {
                 element.click();
             } catch (Exception e) {
                 try {
-                    JavascriptExecutor executor = (JavascriptExecutor) driver;
+                    JavascriptExecutor executor = (JavascriptExecutor) getCurrentDriver();
                     executor.executeScript("arguments[0].click();", element);
                 } catch (Exception c) {
                     String message = String.format("Couldn't click on button with selector:" +
@@ -113,7 +121,7 @@ public class SeleniumUiActions implements UiActions {
                     throw new Exception(message);
                 }
             }
-            new WebDriverWait(driver, twentySeconds).until(
+            new WebDriverWait(getCurrentDriver(), twentySeconds).until(
                     webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
             if (assertion) {
                 By expectedElement = returnElementLocatorBy(expectedElementOb);
@@ -145,7 +153,7 @@ public class SeleniumUiActions implements UiActions {
                 element.click();
             } catch (Exception e) {
                 try {
-                    JavascriptExecutor executor = (JavascriptExecutor) driver;
+                    JavascriptExecutor executor = (JavascriptExecutor) getCurrentDriver();
                     executor.executeScript("arguments[0].click();", element);
                 } catch (Exception c) {
                     String message = String.format("Couldn't click on button with selector:" +
@@ -154,7 +162,7 @@ public class SeleniumUiActions implements UiActions {
                     Assert.fail(message);
                 }
             }
-            new WebDriverWait(driver,twentySeconds ).until(
+            new WebDriverWait(getCurrentDriver(),twentySeconds ).until(
                     webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
         } else {
             String message = String.format("Element with selector: %s is null", ele.selector);
@@ -166,6 +174,7 @@ public class SeleniumUiActions implements UiActions {
 
     public WebElement waitUntil(By b, ExpectedConditionsEnum condition, String... attribute) {
         try {
+            WebDriver driver = getCurrentDriver();
             WebElement element = null;
             switch (condition) {
                 case invisibilityOfElements:
@@ -208,6 +217,7 @@ public class SeleniumUiActions implements UiActions {
     @Override
     public WebElement waitUntil(ElementDto ele, ExpectedConditionsEnum condition, String... attribute) {
         By b = returnElementLocatorBy(ele);
+        WebDriver driver= getCurrentDriver();
         try {
             WebElement element = null;
             switch (condition) {
@@ -252,7 +262,7 @@ public class SeleniumUiActions implements UiActions {
     public void clickOnOneElementFromListOfElements(ElementDto ele, String value) {
         By b = returnElementLocatorBy(ele); // wait till all search block appears
 //        waitUntil(b, ExpectedConditionsEnum.visibilityOfElementLocated);
-        List<WebElement> elements = driver.findElements(b);
+        List<WebElement> elements = getCurrentDriver().findElements(b);
         for (WebElement element : elements) {
             if (element == null) {
                 Assert.fail("Can't click on element with selector : " + ele.selector);
@@ -277,7 +287,10 @@ public class SeleniumUiActions implements UiActions {
             By b = returnElementLocatorBy(ele);
             WebElement element = waitUntil(b, ExpectedConditionsEnum.presenceOfElement);
             if (element != null) {
-                return element.getText();
+                return (
+                        element.getAttribute("value") == null) ?
+                        (element.getAttribute("innerHTML") == null ? element.getText() : element.getAttribute("innerHTML"))
+                        : element.getAttribute("value");
             } else {
                 return null;
             }
@@ -313,9 +326,9 @@ public class SeleniumUiActions implements UiActions {
 
     @Override
     public void navigateToPage(String url, ElementDto ele) {
-        driver.get(url);
+        getCurrentDriver().get(url);
         By b = returnElementLocatorBy(ele);
-        new WebDriverWait(driver, twentySeconds).until(
+        new WebDriverWait(getCurrentDriver(), twentySeconds).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
 
         WebElement element = waitUntil(b, ExpectedConditionsEnum.presenceOfElement);
@@ -324,8 +337,8 @@ public class SeleniumUiActions implements UiActions {
 
     @Override
     public void navigateToPage(String url) {
-        driver.get(url);
-        new WebDriverWait(driver, twentySeconds).until(
+        getCurrentDriver().get(url);
+        new WebDriverWait(getCurrentDriver(), twentySeconds).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
 
@@ -357,7 +370,7 @@ public class SeleniumUiActions implements UiActions {
         WebElement element = waitUntil(b, ExpectedConditionsEnum.visibilityOfElementLocated);
         if (element != null) {
             try {
-                List<WebElement> elements = driver.findElements(returnElementLocatorBy(ele));
+                List<WebElement> elements = getCurrentDriver().findElements(returnElementLocatorBy(ele));
                 if (elements != null) {
                     return elements.size();
                 }
@@ -381,7 +394,7 @@ public class SeleniumUiActions implements UiActions {
     public List<String> getElementsText(ElementDto ele) {
         By b = returnElementLocatorBy(ele);
         waitUntil(b, ExpectedConditionsEnum.presenceOfElement);
-        List<WebElement> elements = driver.findElements(b);
+        List<WebElement> elements = getCurrentDriver().findElements(b);
         List<String> textList = new ArrayList<>();
         if (elements != null) {
             for (WebElement element : elements) {
@@ -396,7 +409,7 @@ public class SeleniumUiActions implements UiActions {
     public List<String> getUniqueElementsText(ElementDto ele) {
         By b = returnElementLocatorBy(ele);
         waitUntil(b, ExpectedConditionsEnum.presenceOfElement);
-        List<WebElement> elements = driver.findElements(b);
+        List<WebElement> elements = getCurrentDriver().findElements(b);
         HashMap<String, String> unique = new HashMap<>();
         List<String> textList = new ArrayList<>();
         if (elements != null) {
@@ -413,7 +426,7 @@ public class SeleniumUiActions implements UiActions {
 
     @Override
     public boolean isElementExist(ElementDto ele) {
-        return (!driver.findElements(
+        return (!getCurrentDriver().findElements(
                 returnElementLocatorBy(ele)
         ).isEmpty());
     }
@@ -423,7 +436,7 @@ public class SeleniumUiActions implements UiActions {
         By b = returnElementLocatorBy(ele);
         WebElement element = waitUntil(b, ExpectedConditionsEnum.presenceOfElement);
         if (element != null) {
-            return (driver.findElement(
+            return (getCurrentDriver().findElement(
                     returnElementLocatorBy(ele)
             ).isEnabled());
         } else {
@@ -447,7 +460,7 @@ public class SeleniumUiActions implements UiActions {
         WebElement element = waitUntil(b, ExpectedConditionsEnum.presenceOfElement);
         if (element != null) {
             try {
-                driver.findElement(
+                getCurrentDriver().findElement(
                         returnElementLocatorBy(ele)
                 ).click();
                 return true;
@@ -465,7 +478,7 @@ public class SeleniumUiActions implements UiActions {
         By b = returnElementLocatorBy(ele);
         waitUntil(b, ExpectedConditionsEnum.visibilityOfElementLocated);
 
-        driver.findElement(b).clear();
+        getCurrentDriver().findElement(b).clear();
     }
 
     @Override
@@ -473,7 +486,7 @@ public class SeleniumUiActions implements UiActions {
         try {
 
             By b = returnElementLocatorBy(ele);
-            List<WebElement> elements = driver.findElements(b);
+            List<WebElement> elements = getCurrentDriver().findElements(b);
             if (elements != null && elements.size() > 0) {
                 for (int i = 0; i < elements.size(); i++) {
                     elements.get(i).click();
@@ -491,7 +504,7 @@ public class SeleniumUiActions implements UiActions {
         By b = returnElementLocatorBy(ele); // wait till all search block appears
         // waitUntil(b,ExpectedConditionsEnum.ElementToBeClickable);
 
-        List<WebElement> elements = driver.findElements(b);
+        List<WebElement> elements = getCurrentDriver().findElements(b);
 
         for (WebElement element : elements) {
 
@@ -513,7 +526,7 @@ public class SeleniumUiActions implements UiActions {
             if (isElementExist(ele)) {
 
                 return
-                        driver.findElement(returnElementLocatorBy(ele))
+                        getCurrentDriver().findElement(returnElementLocatorBy(ele))
                                 .getAttribute(attribute);
             }
         } else {
@@ -527,7 +540,7 @@ public class SeleniumUiActions implements UiActions {
     @Override
     public void clickOnKeyBoard(ElementDto ele, KeyboardKeys key) {
         By b = returnElementLocatorBy(ele);
-        WebElement webElement = driver.findElement(b);
+        WebElement webElement = getCurrentDriver().findElement(b);
         Keys k;
         switch (key) {
             case DOWN:
@@ -558,7 +571,7 @@ public class SeleniumUiActions implements UiActions {
 
     @Override
     public void implicitWait(int seconds) {
-        driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
+        getCurrentDriver().manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
     }
 
 

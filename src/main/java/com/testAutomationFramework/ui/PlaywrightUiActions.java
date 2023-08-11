@@ -1,4 +1,4 @@
-package utilities.ui;
+package com.testAutomationFramework.ui;
 
 import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Page;
@@ -15,6 +15,10 @@ public class PlaywrightUiActions implements UiActions {
 
     public PlaywrightUiActions() {
         this.playwrightBrowserActions = new PlaywrightBrowserActions();
+    }
+
+    public PlaywrightUiActions(BrowserActions browserActions) {
+        this.playwrightBrowserActions = (PlaywrightBrowserActions) browserActions;
     }
 
     @Override
@@ -95,7 +99,6 @@ public class PlaywrightUiActions implements UiActions {
 
     @Override
     public void clickOnOneElementFromListOfElements(ElementDto ele, String value) {
-        ElementHandle elementHandle = getElementHandle(ele);
         List<ElementHandle> elements = getElementsHandle(ele);
         if (elements != null && elements.size() > 0) {
             elements.get(0).click();
@@ -104,9 +107,12 @@ public class PlaywrightUiActions implements UiActions {
 
     @Override
     public String getText(ElementDto ele) {
-        ElementHandle elementHandle = getElementHandle(ele);
-        if (elementHandle != null) {
-            return elementHandle.innerText();
+        ElementHandle element = getElementHandle(ele);
+        if (element != null) {
+            return  (
+                    element.getAttribute("value") == null) ?
+                    (element.getAttribute("innerHTML") == null ? element.getAttribute("innerText") : element.getAttribute("innerHTML"))
+                    : element.getAttribute("value");
         } else {
             return null;
         }
@@ -197,7 +203,7 @@ public class PlaywrightUiActions implements UiActions {
     @Override
     public boolean isElementExist(ElementDto ele) {
         Page page = playwrightBrowserActions.getPageSession();
-        ElementHandle elementHandle = page.querySelector(ele.selector);
+        ElementHandle elementHandle = getElementHandle(ele);
         return elementHandle != null;
     }
 
@@ -216,7 +222,7 @@ public class PlaywrightUiActions implements UiActions {
         ElementHandle elementHandle = getElementHandle(ele);
         return elementHandle.isChecked();
     }
-    
+
     @Override
     public boolean isElementClickable(ElementDto ele) {
         ElementHandle elementHandle = getElementHandle(ele);

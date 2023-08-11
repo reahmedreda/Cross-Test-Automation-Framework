@@ -1,4 +1,4 @@
-package utilities.ui;
+package com.testAutomationFramework.ui;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
@@ -63,9 +63,10 @@ public class SeleniumBrowserActions implements BrowserActions {
                 WebDriverManager.chromedriver().setup();
                 return new ChromeDriver();
             case CHROME_HEADLESS:
-                ChromeOptions headlessChromeOptions = new ChromeOptions();
-                headlessChromeOptions.addArguments("--headless");
-                return new ChromeDriver(headlessChromeOptions);
+                WebDriverManager.chromedriver().setup();
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--headless");
+                return  new ChromeDriver(chromeOptions);
             case FIREFOX:
                 return new FirefoxDriver();
             case FIREFOX_HEADLESS:

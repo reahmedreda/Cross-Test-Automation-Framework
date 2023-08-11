@@ -1,4 +1,4 @@
-package utilities.ui;
+package com.testAutomationFramework.ui;
 
 public class ElementUtilities {
 

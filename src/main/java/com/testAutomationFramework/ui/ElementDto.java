@@ -1,4 +1,4 @@
-package utilities.ui;
+package com.testAutomationFramework.ui;
 
 /**
  * Represents a Data Transfer Object (DTO) for storing information about a UI element.

@@ -1,4 +1,4 @@
-package utilities;
+package com.testAutomationFramework;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

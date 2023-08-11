@@ -8,7 +8,26 @@ import java.util.List;
 public class JMeterActions implements PerformanceTestAction{
     @Override
     public void simulateNormalLoad(ApiRequestDto requestDto) {
-        // Implement JMeter code to simulate normal user load on the API endpoint
+        // Create a JMeter Script Recorder
+        ProxyControl proxyControl = new ProxyControl();
+        proxyControl.setPort(8888);
+    
+        // Create a JMeter Engine
+        StandardJMeterEngine jmeter = new StandardJMeterEngine();
+    
+        // Create a Test Plan
+        TestPlan testPlan = new TestPlan("Simulate Normal Load");
+    
+        // Add the Test Plan and Proxy Control to the HashTree
+        HashTree testPlanTree = new HashTree();
+        testPlanTree.add(testPlan);
+        testPlanTree.add(proxyControl);
+    
+        // Configure the JMeter Engine with the Test Plan
+        jmeter.configure(testPlanTree);
+    
+        // Start the JMeter Engine
+        jmeter.start();
     }
 
     @Override

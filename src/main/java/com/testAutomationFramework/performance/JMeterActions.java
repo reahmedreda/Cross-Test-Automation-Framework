@@ -1,6 +1,10 @@
 package com.testAutomationFramework.performance;
 
 import com.testAutomationFramework.api.ApiRequestDto;
+import org.apache.jmeter.engine.StandardJMeterEngine;
+import org.apache.jmeter.protocol.http.proxy.ProxyControl;
+import org.apache.jmeter.testelement.TestPlan;
+import org.apache.jorphan.collections.HashTree;
 
 import java.time.Duration;
 import java.util.List;
@@ -27,7 +31,7 @@ public class JMeterActions implements PerformanceTestAction{
         jmeter.configure(testPlanTree);
     
         // Start the JMeter Engine
-        jmeter.start();
+        jmeter.run();
     }
 
     @Override
@@ -73,7 +77,7 @@ public class JMeterActions implements PerformanceTestAction{
 
     @Override
     public Duration measureResponseTime(ApiRequestDto request) {
-    +        // Implement JMeter code to measure the system response time under current load on the API endpoint
-    +        return null;
-    +    }
+            // Implement JMeter code to measure the system response time under current load on the API endpoint
+            return null;
+        }
 }

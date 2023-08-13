@@ -2,3 +2,6 @@
 *.iml
 allure-results/*
 target
+test-output
+src/main/java/com/testAutomationFramework/dummyTestPackage
+.DS_Store

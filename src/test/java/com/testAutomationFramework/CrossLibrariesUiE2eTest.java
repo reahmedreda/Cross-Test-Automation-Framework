@@ -5,7 +5,7 @@ import com.testAutomationFramework.ui.UiActions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class CrossLibrariesUiE2eTest extends TestBase{
+public class CrossLibrariesUiE2eTest extends TestBase {
     ElementDto luckBtn = new ElementDto("/descendant::input[contains(@value,'Feeling Lucky')] [2]"),
     random =new ElementDto("//input"),
     searchBox = new ElementDto("//textarea[@name='q']");
@@ -54,6 +54,9 @@ public class CrossLibrariesUiE2eTest extends TestBase{
         Assert.assertTrue(value.contains("Lucky"));
         // Perform assertion on the value
     }
+
+
+
 
 
 }

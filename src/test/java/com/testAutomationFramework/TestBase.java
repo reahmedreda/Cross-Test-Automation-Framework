@@ -1,12 +1,15 @@
 package com.testAutomationFramework;
 
 import com.testAutomationFramework.ui.*;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Optional;
 
 
 public  class TestBase {
     BrowserActions browser;
-    UiActions uiActions;
+    protected UiActions uiActions;
 
     @BeforeTest
     public void beforeSuite(@Optional("selenium") String library){

@@ -1,4 +1,4 @@
-package com.testAutomationFramework;
+package com.testAutomationFramework.testNgUtilities;
 
 
 import org.testng.IRetryAnalyzer;

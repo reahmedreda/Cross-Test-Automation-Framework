@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="All Tests" data-provider-thread-count="4" parallel="tests" thread-count="5" verbose="2" >
     <listeners>
-        <listener class-name="com.testAutomationFramework.RetryListener"/>
+        <listener class-name="com.testAutomationFramework.testNgUtilities.RetryListener"/>
     </listeners>
     <test name="selenium" parallel="methods" thread-count="5" >
         <parameter name="library" value="selenium" />

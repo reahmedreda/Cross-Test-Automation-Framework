@@ -1,6 +1,6 @@
 # Cross-Library Test Automation Framework
 
-![Framework Logo](TAA.png)
+![Framework Logo](TAA.jpg)
 
 Welcome to the Cross-Library Test Automation Framework repository! This framework aims to provide a generic and flexible solution for conducting test automation across various libraries and technologies. It allows you to write a single generic test, which can then be executed using different libraries and tools, such as Selenium, Playwright, Rest Assured, Spring Boot, JMeter, and Gatling, without requiring any changes to the test logic or core classes.
 

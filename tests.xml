@@ -1,0 +1,18 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="All Tests" data-provider-thread-count="4" parallel="tests" thread-count="5" verbose="2" >
+    <listeners>
+        <listener class-name="com.testAutomationFramework.testNgUtilities.RetryListener"/>
+    </listeners>
+    <test name="selenium" parallel="methods" thread-count="5" >
+        <parameter name="library" value="selenium" />
+        <classes>
+            <class name="com.testAutomationFramework.CrossLibrariesUiE2eTest"></class>
+        </classes>
+    </test>
+    <test name="playwright" parallel="methods" thread-count="5">
+        <parameter name="library" value="playwright" />
+        <classes>
+            <class name="com.testAutomationFramework.CrossLibrariesUiE2eTest"></class>
+        </classes>
+    </test>
+</suite>

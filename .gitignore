@@ -5,3 +5,4 @@ target
 test-output
 src/main/java/com/testAutomationFramework/dummyTestPackage
 .DS_Store
+test-report.xml

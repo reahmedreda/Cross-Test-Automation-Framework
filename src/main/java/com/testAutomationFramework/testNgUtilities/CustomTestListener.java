@@ -15,6 +15,8 @@ import java.util.List;
 public class CustomTestListener implements ITestListener {
 
     private List<TestResult> testResults = new ArrayList<>();
+    int skippedCount=0,successCount=0,failedCount=0;
+    double totalTime = 0;
 
     @Override
     public void onTestStart(ITestResult result) {
@@ -24,18 +26,21 @@ public class CustomTestListener implements ITestListener {
     @Override
     public void onTestSuccess(ITestResult result) {
         // Perform actions when a test passes
+        successCount++;
         captureTestResult(result);
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
         // Perform actions when a test fails
+        failedCount++;
         captureTestResult(result);
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
         // Perform actions when a test is skipped
+        skippedCount++;
         captureTestResult(result);
     }
 
@@ -44,15 +49,33 @@ public class CustomTestListener implements ITestListener {
     public String generateJUnitXmlReport() {
         StringBuilder xmlBuilder = new StringBuilder();
         xmlBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-        xmlBuilder.append("<testsuite name=\"Test Suite\" timestamp=\"").append(new Date().getTime()).append("\">\n");
+        xmlBuilder.append("<testsuites>\n");
+        xmlBuilder.append("  <testsuite name=\"Test Suite\" timestamp=\"")
+                .append(new Date().getTime()).append("\" tests=\"")
+                .append(testResults.size())
+                .append("\" success=\"")
+                .append(successCount)
+                .append("\" failures=\"")
+                .append(failedCount)
+                .append("\" errors=\"0\" skipped=\"")
+                .append(skippedCount)
+                .append("\" time=\"")
+                .append(totalTime).append("\">\n");
 
         for (TestResult result : testResults) {
             xmlBuilder.append(result.toJUnitXml()).append("\n");
         }
 
-        xmlBuilder.append("</testsuite>");
+        xmlBuilder.append("  </testsuite>\n");
+        xmlBuilder.append("</testsuites>");
         return xmlBuilder.toString();
     }
+
+    private void getTotalExecutionTime(ITestResult tr) {
+
+            totalTime += tr.getEndMillis() - tr.getStartMillis();
+    }
+
     public void saveJUnitXmlReport(String outputPath) throws IOException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(outputPath))) {
             writer.println(generateJUnitXmlReport());

@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-import static com.testAutomationFramework.LoggingHandling.logger;
+import static com.testAutomationFramework.utils.LoggingHandling.logger;
 
 
 public class SeleniumUiActions implements UiActions {

@@ -1,20 +1,20 @@
 package com.testAutomationFramework;
 
 import com.testAutomationFramework.ui.*;
-import org.testng.ITest;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 
-public  class TestBase implements ITest {
+public  class TestBase {
     BrowserActions browser;
     protected UiActions uiActions;
-    private ThreadLocal<String> testName = new ThreadLocal<>();
 
     @BeforeClass
     @Parameters("library")
     public void beforeClass(@Optional("selenium") String library) throws Exception {
+
         //System.getProperty("testLibrary");
+
         if (library != null) {
             switch (library){
                 case "playwright":
@@ -52,8 +52,4 @@ public  class TestBase implements ITest {
         browser.closeBrowser();
     }
 
-    @Override
-    public String getTestName() {
-        return testName.get();
-    }
 }

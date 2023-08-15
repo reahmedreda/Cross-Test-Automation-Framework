@@ -62,6 +62,7 @@ public class TestNgDynamicRunner {
 
         TestNG testNG = new TestNG();
         testNG.setXmlSuites(Collections.singletonList(suite));
+        testNG.addListener(new RunTestWithTransformer());
         testNG.addListener(listener);
         testNG.run();
         return listener;

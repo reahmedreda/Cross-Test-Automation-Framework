@@ -2,9 +2,8 @@ package com.testAutomationFramework;
 
 import com.testAutomationFramework.ui.*;
 import org.testng.ITest;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
-
-import java.lang.reflect.Method;
 
 
 public  class TestBase implements ITest {
@@ -43,9 +42,9 @@ public  class TestBase implements ITest {
 
     @BeforeMethod
     @Parameters("library")
-    public void beforeMethod(@Optional("selenium") String library, Method method){
+    public void beforeMethod(@Optional("selenium") String library,ITestResult result){
         browser.createBrowserSession(BrowserActions.DriverType.CHROME_HEADLESS);
-        testName.set(method.getName() + "_" + library);
+        result.setAttribute("library", library);
     }
 
     @AfterMethod

@@ -141,7 +141,13 @@ public class CustomTestListener implements ITestListener {
 
         public TestResult(ITestResult result) {
             className = result.getTestClass().getName();
-            methodName = result.getMethod().getMethodName();
+            String library = (String) result.getAttribute("library");
+            if (library!=null && !library.isEmpty()) {
+                methodName = result.getMethod().getMethodName() + "_" + library;
+            }
+            else{
+                methodName = result.getMethod().getMethodName();
+            }
             status = result.getStatus() == ITestResult.SUCCESS ? "pass" : "fail";
             stackTrace = getStackTrace(result.getThrowable());
         }

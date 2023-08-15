@@ -4,6 +4,7 @@ import com.testAutomationFramework.testNgUtilities.RunTestWithTransformer;
 import com.testAutomationFramework.ui.*;
 import com.testAutomationFramework.utils.RunTestWith;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
@@ -52,7 +53,7 @@ public class DummyTest {
 
 
     @BeforeMethod
-    public void before(Method method) throws Exception {
+    public void before(Method method, ITestResult result) throws Exception {
 
         String x=   RunTestWithTransformer.testVsLibraryMap.get(method.getName());
 
@@ -61,12 +62,13 @@ public class DummyTest {
                 case "playwright":
                     browsers.set(new PlaywrightBrowserActions());
                     uiActions.set(new PlaywrightUiActions(browsers.get()));
-
+                    result.setAttribute("library", x);
                     break;
 
                 case "selenium" :
                     browsers.set(new SeleniumBrowserActions());
                     uiActions.set(new SeleniumUiActions(browsers.get()));
+                    result.setAttribute("library", x);
                     break;
 
                 default:

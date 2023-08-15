@@ -1,7 +1,7 @@
 package com.testAutomationFramework.testingAsService;
 
 import com.testAutomationFramework.testNgUtilities.CustomTestListener;
-import com.testAutomationFramework.utils.FileManager;
+import com.testAutomationFramework.testNgUtilities.TestNgDynamicRunner;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,66 +10,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.testng.TestNG;
-import org.testng.xml.XmlClass;
-import org.testng.xml.XmlSuite;
-import org.testng.xml.XmlTest;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public @RestController
 class TestExecutionController {
 
-    String srcFolder = "src/main/java/",
-            testFolder = "src/test/java/",
-            destMainPackage = "com/testAutomationFramework";
-
-    String testSrcPackage = "com/testAutomationFramework";
 
     String outputPath = "test-report-";
 
     @GetMapping("/run-test-package")
-    public ResponseEntity<String> runTestPackage(@RequestParam(required = false) String packageName) {
+    public ResponseEntity<String> runTestPackage(@RequestParam(required = false) String packageName,
+                                                 @RequestParam(required = false) Map<String, String> allParams) {
 
         try {
-            String currentTestFolder = testFolder + destMainPackage;
-            if(packageName!= null && !packageName.isEmpty()){
-                currentTestFolder+="/"+packageName;
+            CustomTestListener listener = new CustomTestListener();
+            HashMap<String,String> testParams = new HashMap<>();
+            for (Map.Entry<String, String> parameterEntry : allParams.entrySet()) {
+                String paramName = parameterEntry.getKey();
+                String paramValue = parameterEntry.getValue();
+                testParams.put(paramName,paramValue);
             }
 
-            XmlSuite suite = new XmlSuite();
-            XmlTest test = new XmlTest(suite);
-            Path currentFolder = Paths.get(currentTestFolder);
-            FileManager.copyTestClassesToTarget();
-            Files.walk(currentFolder)
-                    .filter(Files::isRegularFile)
-                    .forEach(sourceFile -> {
-                        Path relativePath = currentFolder.relativize(sourceFile);
+            listener = TestNgDynamicRunner.runTestPackage(packageName, listener,testParams);
 
-                        String trimmedRelativePath = "";
-                        if(packageName!=null && !packageName.isEmpty()) {
-                            trimmedRelativePath +=
-                                    "." + packageName;
-                        }
-                        trimmedRelativePath+="."+relativePath.toString().replace(".java","");
-                        test.getXmlClasses().add(new XmlClass( (testSrcPackage+trimmedRelativePath).replace("/",".")));
-
-                    });
-
-
-            TestNG testNG = new TestNG();
-            CustomTestListener listener = new CustomTestListener();
-
-            testNG.setXmlSuites(Collections.singletonList(suite));
-            testNG.addListener(listener);
-            testNG.run();
 
             // Generate XML results
             String o= outputPath+generateRandomAlphaNumeric(5)+".xml";
@@ -92,17 +60,9 @@ class TestExecutionController {
                 throw new FileNotFoundException(xmlName + " is not found");
             }
 
-            FileManager.copyTestClassesToTarget();
-            TestNG testNG = new TestNG();
             CustomTestListener listener = new CustomTestListener();
-            XmlSuite suite = new XmlSuite();
-            List<XmlSuite> suites = new ArrayList<>();
-            suite.setSuiteFiles(Arrays.asList(xmlName)); // Provide the path to your XML suite file
+            listener= TestNgDynamicRunner.runXmlTestFile(xmlName,listener);
 
-            suites.add(suite);
-            testNG.setXmlSuites(suites);
-            testNG.addListener(listener);
-            testNG.run();
 
             // Generate XML results
 

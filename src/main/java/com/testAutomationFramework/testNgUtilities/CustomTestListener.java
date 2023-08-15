@@ -1,6 +1,7 @@
 package com.testAutomationFramework.testNgUtilities;
 
 
+import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
@@ -8,15 +9,36 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class CustomTestListener implements ITestListener {
 
     private List<TestResult> testResults = new ArrayList<>();
     int skippedCount=0,successCount=0,failedCount=0;
     double totalTime = 0;
+    private boolean beforeTestFailed = false;
+    private StringBuilder systemOutContent = new StringBuilder();
+
+    public Map<String, String> getTestParams() {
+        return testParams;
+    }
+
+
+    public void setTestParams(Map<String, String> testParams) {
+        this.testParams = testParams;
+    }
+
+    Map<String,String> testParams = new HashMap<>();
+
+    @Override
+    public void onStart(ITestContext context) {
+        for (Map.Entry<String, String> parameterEntry : getTestParams().entrySet()) {
+            String paramName = parameterEntry.getKey();
+            String paramValue = parameterEntry.getValue();
+            context.getCurrentXmlTest().addParameter(paramName,paramValue);
+        }
+    }
+
 
     @Override
     public void onTestStart(ITestResult result) {
@@ -33,8 +55,29 @@ public class CustomTestListener implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
         // Perform actions when a test fails
+        if (result.getMethod().isBeforeTestConfiguration()) {
+            beforeTestFailed = true;
+        }
         failedCount++;
         captureTestResult(result);
+        result.setStatus(ITestResult.FAILURE);
+        result.setThrowable(null);
+    }
+
+    @Override
+    public void onFinish(ITestContext context) {
+        if (beforeTestFailed) {
+            // Append system out content to the JUnit XML report
+            for (ITestResult result : context.getFailedTests().getAllResults()) {
+                if (result.getMethod().isBeforeTestConfiguration()) {
+                    systemOutContent.append(getSystemOutContent());
+                    break; // Append once for the first failed @BeforeTest
+                }
+            }
+        }
+    }
+    public String getSystemOutContent() {
+        return systemOutContent.toString();
     }
 
     @Override
@@ -62,6 +105,9 @@ public class CustomTestListener implements ITestListener {
                 .append("\" time=\"")
                 .append(totalTime).append("\">\n");
 
+        if (beforeTestFailed) {
+            xmlBuilder.append("    <system-out><![CDATA[").append(systemOutContent).append("]]></system-out>\n");
+        }
         for (TestResult result : testResults) {
             xmlBuilder.append(result.toJUnitXml()).append("\n");
         }
@@ -95,7 +141,13 @@ public class CustomTestListener implements ITestListener {
 
         public TestResult(ITestResult result) {
             className = result.getTestClass().getName();
-            methodName = result.getMethod().getMethodName();
+            String library = (String) result.getAttribute("library");
+            if (library!=null && !library.isEmpty()) {
+                methodName = result.getMethod().getMethodName() + "_" + library;
+            }
+            else{
+                methodName = result.getMethod().getMethodName();
+            }
             status = result.getStatus() == ITestResult.SUCCESS ? "pass" : "fail";
             stackTrace = getStackTrace(result.getThrowable());
         }

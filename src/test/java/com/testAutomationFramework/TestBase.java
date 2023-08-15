@@ -1,19 +1,20 @@
 package com.testAutomationFramework;
 
 import com.testAutomationFramework.ui.*;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Optional;
+import org.testng.ITestResult;
+import org.testng.annotations.*;
 
 
 public  class TestBase {
     BrowserActions browser;
     protected UiActions uiActions;
 
-    @BeforeTest
-    public void beforeSuite(@Optional("selenium") String library){
+    @BeforeClass
+    @Parameters("library")
+    public void beforeClass(@Optional("selenium") String library) throws Exception {
+
         //System.getProperty("testLibrary");
+
         if (library != null) {
             switch (library){
                 case "playwright":
@@ -22,11 +23,13 @@ public  class TestBase {
 
                     break;
 
-                default:
+                case "selenium" :
                     browser = new SeleniumBrowserActions();
                     uiActions = new SeleniumUiActions(browser);
-
                     break;
+
+                default:
+                    throw new Exception("the library "+library+" you requested is invalid or not supported yet");
 
             }
         } else {
@@ -36,19 +39,17 @@ public  class TestBase {
         }
     }
 
-//    abstract UiActions getUiActions();
-
-
-//
-//    abstract BrowserActions getBrowserActions();
 
     @BeforeMethod
-    public void setup(){
+    @Parameters("library")
+    public void beforeMethod(@Optional("selenium") String library,ITestResult result){
         browser.createBrowserSession(BrowserActions.DriverType.CHROME_HEADLESS);
+        result.setAttribute("library", library);
     }
 
     @AfterMethod
     public void tearDown(){
         browser.closeBrowser();
     }
+
 }

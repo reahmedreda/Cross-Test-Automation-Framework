@@ -1,8 +1,8 @@
 package com.testAutomationFramework.ui;
 
-public interface BrowserActions {
+public interface BrowserActions<T> {
 
-    Object getBrowserSession();
+    T getBrowserSession();
 
     void createBrowserSession(DriverType driverType, Boolean... useRemote);
 

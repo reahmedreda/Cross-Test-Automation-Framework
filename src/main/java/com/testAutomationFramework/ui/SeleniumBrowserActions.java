@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class SeleniumBrowserActions implements BrowserActions {
+public class SeleniumBrowserActions implements BrowserActions{
 
     private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
 
     @Override
-    public Object getBrowserSession() {
+    public WebDriver getBrowserSession() {
         return driverThreadLocal.get();
     }
 

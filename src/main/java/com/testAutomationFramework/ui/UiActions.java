@@ -3,19 +3,19 @@ package com.testAutomationFramework.ui;
 
 import java.util.List;
 
-public interface UiActions {
+public interface UiActions<T,B> {
     int getTheSizeOfListOfElements(ElementDto ele);
     void setText(ElementDto ele, String text, boolean clear, Boolean... assertOnActualValue);
     void clickOn(ElementDto ele, boolean assertion, ElementDto expectedElementOb) throws Exception;
     void clickOn(ElementDto ele, Boolean... waitUntilVisibleOnly);
-    Object waitUntil(ElementDto ele, ExpectedConditionsEnum condition, String... attribute);
+    T waitUntil(ElementDto ele, ExpectedConditionsEnum condition, String... attribute);
     void clickOnOneElementFromListOfElements(ElementDto ele, String value);
     String getText(ElementDto ele);
     String getValue(ElementDto ele);
     List<String> ClickFirstThenGetText(ElementDto eleToClickOn, ElementDto eleToGetElements);
     void navigateToPage(String url, ElementDto ele);
     void navigateToPage(String url);
-    Object returnElementLocatorBy(ElementDto elementDto);
+    B returnElementLocatorBy(ElementDto elementDto);
     int getMatchingElementsCount(ElementDto ele);
     boolean isElementDisplayed(ElementDto ele);
 

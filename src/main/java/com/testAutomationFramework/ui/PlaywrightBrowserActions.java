@@ -4,12 +4,12 @@ import com.microsoft.playwright.*;
 
 import java.nio.file.Paths;
 
-public class PlaywrightBrowserActions implements BrowserActions {
+public class PlaywrightBrowserActions implements BrowserActions{
     private static ThreadLocal<Browser> browserThreadLocal = new ThreadLocal<>();
     private static ThreadLocal<Page> pageThreadLocal = new ThreadLocal<>();
 
     @Override
-    public Object getBrowserSession() {
+    public Browser getBrowserSession() {
         System.out.println("Getting thread "+browserThreadLocal.get());
         return browserThreadLocal.get();
     }

@@ -91,6 +91,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20230618</version>
+        </dependency>
 
 
 
@@ -103,9 +109,16 @@
                 <version>2.22.2</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>test.xml</suiteXmlFile>
+                        <suiteXmlFile>tests.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <testFailureIgnore>true</testFailureIgnore>
+                    <properties>
+                        <!-- Add your TestNG listener class here -->
+                        <property>
+                            <name>listener</name>
+                            <value>com.testAutomationFramework.utils.testNgUtilities.listeners.RunTestWithTransformer</value>
+                        </property>
+                    </properties>
                 </configuration>
             </plugin>
             <!-- Allure Maven plugin -->

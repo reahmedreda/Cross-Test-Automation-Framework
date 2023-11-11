@@ -1,6 +1,6 @@
 package com.testAutomationFramework.actionsImp.testingAsService;
 
-import com.testAutomationFramework.utils.testNgUtilities.CustomTestListener;
+import com.testAutomationFramework.utils.testNgUtilities.listeners.CustomTestListener;
 import com.testAutomationFramework.utils.testNgUtilities.TestNgDynamicRunner;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpHeaders;

@@ -1,10 +1,10 @@
 package com.testAutomationFramework.Modules.pom;
 
 
-import com.testAutomationFramework.actionsImp.ui.BrowserActions;
-import com.testAutomationFramework.actionsImp.ui.ElementDto;
-import com.testAutomationFramework.actionsImp.ui.UiActionsDto;
-import com.testAutomationFramework.actionsImp.ui.ElementActions;
+import com.testAutomationFramework.actionsImp.ui.interfaces.BrowserActions;
+import com.testAutomationFramework.actionsImp.ui.dtos.ElementDto;
+import com.testAutomationFramework.actionsImp.ui.dtos.UiActionsDto;
+import com.testAutomationFramework.actionsImp.ui.interfaces.ElementActions;
 
 public class GoogleHomePage {
     String homeUrl ="https://www.google.com/en";

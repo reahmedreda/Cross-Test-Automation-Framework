@@ -1,11 +1,17 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="All Tests" data-provider-thread-count="4" parallel="tests" thread-count="5" verbose="2" >
     <listeners>
-        <listener class-name="com.testAutomationFramework.utils.testNgUtilities.RunTestWithTransformer"/>
+        <listener class-name="com.testAutomationFramework.utils.testNgUtilities.listeners.RunTestWithTransformer"/>
     </listeners>
-    <test name="selenium" parallel="methods" thread-count="5" >
+    <test name="ui" parallel="methods" thread-count="5" >
         <classes>
-            <class name="com.testAutomationFramework.ui.CrossLibRunWithTest"></class>
+            <class name="com.testAutomationFramework.ui.GoogleTest"></class>
+        </classes>
+    </test>
+
+    <test name="api" parallel="methods" thread-count="5" >
+        <classes>
+            <class name="com.testAutomationFramework.api.PostmanEchoTest"></class>
         </classes>
     </test>
 </suite>

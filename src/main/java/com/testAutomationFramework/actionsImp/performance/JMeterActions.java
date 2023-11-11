@@ -1,6 +1,6 @@
 package com.testAutomationFramework.actionsImp.performance;
 
-import com.testAutomationFramework.actionsImp.api.ApiRequestDto;
+import com.testAutomationFramework.actionsImp.api.dtos.ApiRequestDto;
 
 import java.time.Duration;
 import java.util.List;

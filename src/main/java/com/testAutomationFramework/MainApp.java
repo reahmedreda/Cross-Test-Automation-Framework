@@ -1,6 +1,6 @@
 package com.testAutomationFramework;
 
-import com.testAutomationFramework.utils.FileManager;
+import com.testAutomationFramework.utils.fileHandlers.FileManager;
 import com.testAutomationFramework.utils.MavenUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

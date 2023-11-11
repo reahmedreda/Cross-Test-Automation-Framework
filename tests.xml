@@ -14,4 +14,10 @@
             <class name="com.testAutomationFramework.api.PostmanEchoTest"></class>
         </classes>
     </test>
+
+    <test name="mixed" parallel="methods" thread-count="5" >
+        <classes>
+            <class name="com.testAutomationFramework.mixed.MixedUiApi"></class>
+        </classes>
+    </test>
 </suite>

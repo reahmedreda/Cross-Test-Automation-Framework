@@ -1,4 +1,4 @@
-package com.testAutomationFramework.ui;
+package com.testAutomationFramework.mixed;
 
 import com.testAutomationFramework.Modules.apis.PostmanEchoEndpoint;
 import com.testAutomationFramework.Modules.pom.GoogleHomePage;
